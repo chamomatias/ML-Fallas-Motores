@@ -94,7 +94,7 @@ st.markdown(
         App desarrollada por <strong>Matías Chamorro</strong><br><br>
         <a href="https://www.linkedin.com/in/m-chamorro/" target="_blank">
             <img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" width="25" style="margin-bottom: -5px;"/>
-            Visitar perfil en LinkedIn
+            
         </a>
     </div>
     """,
