@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import pickle
+import matplotlib.pyplot as plt
 
 # ---------------------------
 # Cargar modelo entrenado
@@ -30,8 +31,6 @@ uploaded_file = st.file_uploader("📂 Subí un archivo CSV", type="csv")
 if uploaded_file is not None:
     try:
         datos_nuevos = pd.read_csv(uploaded_file)
-        st.subheader("📋 Vista previa de los datos")
-        st.dataframe(datos_nuevos.head())
 
         columnas_requeridas = [
             'motor_id', 'temperatura', 'vibracion', 'presion', 'rpm',
@@ -44,10 +43,33 @@ if uploaded_file is not None:
             predicciones = modelo.predict(X_nuevo)
             datos_nuevos['prediccion_falla_15_dias'] = predicciones
 
+            # Vista previa con slider
+            st.subheader("📋 Vista previa de los datos")
+            num_filas = st.slider(
+                "Cantidad de filas a mostrar:",
+                min_value=1,
+                max_value=len(datos_nuevos),
+                value=min(10, len(datos_nuevos)),
+                step=1
+            )
+            st.dataframe(datos_nuevos.head(num_filas))
+
+            # Resultados de predicción
             st.subheader("📊 Resultados de Predicción")
             st.write("0 = No fallará | 1 = Fallará en los próximos 15 días")
             st.dataframe(datos_nuevos[['motor_id', 'prediccion_falla_15_dias']])
 
+            # Gráfico de resumen
+            st.subheader("📈 Distribución de predicciones")
+            conteo = datos_nuevos['prediccion_falla_15_dias'].value_counts().sort_index()
+            etiquetas = ['No fallará (0)', 'Fallará (1)']
+            fig, ax = plt.subplots()
+            ax.bar(etiquetas, conteo)
+            ax.set_ylabel("Cantidad de motores")
+            ax.set_title("Cantidad de predicciones por clase")
+            st.pyplot(fig)
+
+            # Descarga CSV con resultados
             csv_resultado = datos_nuevos.to_csv(index=False).encode("utf-8")
             st.download_button(
                 label="📥 Descargar resultados como CSV",
