@@ -84,8 +84,9 @@ if uploaded_file is not None:
     except Exception as e:
         st.error(f"⚠️ Error al procesar el archivo: {e}")
 
-import streamlit.components.v1 as components
-
+# ---------------------------
+# Pie de página con LinkedIn
+# ---------------------------
 st.markdown("""---""")
 
 st.markdown(
@@ -93,8 +94,8 @@ st.markdown(
     <div style='text-align: center; margin-top: 40px; font-size: 0.9em;'>
         App desarrollada por <strong>Matías Chamorro</strong><br><br>
         <a href="https://www.linkedin.com/in/m-chamorro/" target="_blank">
-            <img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" width="25" style="margin-bottom: -5px;"/>
-              
+            <img src="https://cdn-icons-png.flaticon.com/512/174/174857.png"
+                 width="25" style="vertical-align: middle;" title="Perfil de LinkedIn"/>
         </a>
     </div>
     """,
